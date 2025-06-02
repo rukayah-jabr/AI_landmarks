@@ -1,23 +1,22 @@
+# AI Landmark Classification with Grad-CAM
 
-# 🧠 AI Landmark Classification with Grad-CAM
-
-This project is an AI-based landmark image classifier using transfer learning with InceptionV3 and visual explanation using Grad-CAM. Below is the setup and usage documentation so other contributors can run and test the system locally.
+This project is an AI-based landmark image classifier using transfer learning with InceptionV3 and Grad-CAM for visual explanation. It allows you to classify landmark images and visualize where the model focused while making a prediction.
 
 ---
 
-## 📦 1. Setup Instructions
+## 1. Setup Instructions
 
-### Clone and setup the environment
+### Clone the repository and create a virtual environment
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/rukayah-jabr/AI_landmarks.git
 cd AI_landmarks
 python -m venv venv310
-venv310\Scripts\activate    # For Windows
+venv310\Scripts\activate    # On Windows
 pip install -r requirements.txt
 ```
 
-If `requirements.txt` does not exist, install manually:
+If `requirements.txt` does not exist, install the necessary libraries manually:
 
 ```bash
 pip install tensorflow keras opencv-python matplotlib
@@ -25,7 +24,7 @@ pip install tensorflow keras opencv-python matplotlib
 
 ---
 
-## 2. Project Structure Overview
+## 2. Project Structure
 
 ```
 AI_landmarks/
@@ -35,41 +34,55 @@ AI_landmarks/
 │       ├── [Class2]/
 │       └── ...
 ├── models/
-│   └── landmark_model.h5          # Trained model file
+│   └── landmark_model.h5      # (Not included in the repo, must be trained locally)
 ├── scripts/
-│   ├── gradcam.py                 # Grad-CAM visualization script
-├── explore_data.py                # Sets the base_path used by other scripts
+│   ├── gradcam.py             # Grad-CAM visualization script
+│   └── (train_model.py)       # Optional: create this to train the model
+├── explore_data.py            # Sets the base_path used by scripts
 └── README.md
 ```
 
 ---
 
-## 3. Model & Training
+## 3. Training the Model
 
-We use **InceptionV3** as the base model. The final layer is customized with 5 output classes (you can change this number in the `gradcam.py` script depending on your dataset).
+The trained model file (`models/landmark_model.h5`) is **not included in this repository** because it exceeds GitHub's size limits.
 
-The model is trained and saved to:
+You have two options:
+
+### Option 1: Train it yourself
+
+Ensure your training data is inside:
+
+```
+data/landmarks/
+├── Class1/
+├── Class2/
+└── ...
+```
+
+Each class folder must contain images.
+
+Then, use your own `train_model.py` script to train and save the model as:
 
 ```
 models/landmark_model.h5
 ```
 
+> Don't have a training script? Ask the project owner or refer to TensorFlow/Keras tutorials for `ImageDataGenerator` + `InceptionV3` fine-tuning.
+
 ---
 
-## 4. Grad-CAM Explanation (scripts/gradcam.py)
+## 4. Grad-CAM Visualization (`scripts/gradcam.py`)
 
 This script:
 
-1. Loads a saved model.
-2. Selects a sample image from one class folder.
-3. Predicts the class of the image.
-4. Creates a Grad-CAM heatmap for visual explanation.
-5. Overlays heatmap on the original image.
-6. Displays and saves the output as `models/gradcam_result.png`.
-
-It also prints:
-- Predicted class index (e.g., 2)
-- Predicted class label (e.g., “Stephansdom Vienna”)
+1. Loads the trained model from `models/landmark_model.h5`
+2. Picks a sample image from one of the class folders
+3. Predicts the class of the image
+4. Generates Grad-CAM heatmap
+5. Overlays the heatmap on the image
+6. Saves and displays the result
 
 To run:
 
@@ -77,38 +90,16 @@ To run:
 python scripts/gradcam.py
 ```
 
-Make sure `explore_data.py` contains a valid `base_path` pointing to the `data/landmarks` folder.
+Make sure that `explore_data.py` contains a valid `base_path` pointing to the `data/landmarks` folder.
 
----
-
-## 5. Script Descriptions
-
-- **explore_data.py**  
-  Contains the variable `base_path`, used to define the path to your landmarks dataset.
-
-- **scripts/gradcam.py**  
-  Performs Grad-CAM visualization on a single sample image using the trained model. Useful for debugging and explaining model predictions.
-
----
-
-## 6. Common Issues
-
-- FileNotFoundError: Check that your `base_path` is correct and folders like `data/landmarks/<ClassName>/` exist.
-- Grad-CAM output shows black image: The input image might not be readable by OpenCV or path might be invalid.
-- Wrong predictions: Model might require more training or better data preprocessing.
-
----
-
-## 7. Sample Output
-
-When successful, you will see:
+Output:
 
 ```
 Predicted class index: 3
 Predicted class label: Belvedere Palace Vienna
 ```
 
-And a Grad-CAM result image saved to:
+Image saved to:
 
 ```
 models/gradcam_result.png
@@ -116,14 +107,35 @@ models/gradcam_result.png
 
 ---
 
-## 8. Contributors Setup Notes
+## 5. Script Descriptions
 
-Everyone should:
+| Script                | Purpose                                                                 |
+|-----------------------|-------------------------------------------------------------------------|
+| `explore_data.py`     | Defines `base_path` to your local dataset folder                       |
+| `scripts/gradcam.py`  | Loads model, predicts a sample image, and shows Grad-CAM visualization |
+| `scripts/train_model.py` *(optional)* | (You can create this) Train the InceptionV3 model on your dataset      |
 
-- Clone the repo
-- Setup virtual environment and install dependencies
-- Put class folders with images under `data/landmarks/`
-- Run `gradcam.py` to test inference and visualization
+---
+
+## 6. Common Issues
+
+- `FileNotFoundError`: Check `base_path` and make sure class folders exist
+- Grad-CAM image is black: The image path may be invalid or unreadable
+- Model not found: You must train and save `landmark_model.h5` locally
+- Push failed: Virtual environment and model files are excluded from Git to avoid size issues
+
+---
+
+## 7. Contributors Guide
+
+Each contributor should:
+
+1. Clone the repo
+2. Set up Python virtual environment
+3. Install dependencies
+4. Place class-based images in `data/landmarks/`
+5. Train the model (if needed)
+6. Run `scripts/gradcam.py` to test prediction and explanation
 
 For any questions, contact the project owner.
 
