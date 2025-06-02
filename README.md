@@ -13,13 +13,13 @@ git clone https://github.com/rukayah-jabr/AI_landmarks.git
 cd AI_landmarks
 python -m venv venv310
 venv310\Scripts\activate    # On Windows
-pip install -r requirements.txt
 ```
 
 If `requirements.txt` does not exist, install the necessary libraries manually:
 
 ```bash
-pip install tensorflow keras opencv-python matplotlib
+pip install -r requirements.txt
+pip install tensorflow==2.15 keras opencv-python matplotlib scipy
 ```
 
 ---
@@ -63,7 +63,7 @@ data/landmarks/
 
 Each class folder must contain images.
 
-Then, use your own `train_model.py` script to train and save the model as:
+Then, use your own `train-model.py` script to train and save the model as:
 
 ```
 models/landmark_model.h5
@@ -72,6 +72,24 @@ models/landmark_model.h5
 > Don't have a training script? Ask the project owner or refer to TensorFlow/Keras tutorials for `ImageDataGenerator` + `InceptionV3` fine-tuning.
 
 ---
+
+---
+
+## Alternative Training Script: `train-mobilenet.py`
+
+If you prefer a lightweight model, you can use the optional script `train-mobilenet.py` located in the `scripts/` folder. It uses **MobileNetV2** instead of InceptionV3 and is well-suited for small datasets or faster training.
+
+### Features:
+- Uses MobileNetV2 with pretrained ImageNet weights
+- Freezes base layers and adds a custom classifier
+- Generates and saves training/validation accuracy and loss plots
+- Saves model as `models/mobilenet_model.h5`
+
+### To run:
+
+```bash
+python scripts/train-mobilenet.py
+```
 
 ## 4. Grad-CAM Visualization (`scripts/gradcam.py`)
 
@@ -87,6 +105,7 @@ This script:
 To run:
 
 ```bash
+pip install opencv-python
 python scripts/gradcam.py
 ```
 
@@ -109,11 +128,11 @@ models/gradcam_result.png
 
 ## 5. Script Descriptions
 
-| Script                | Purpose                                                                 |
-|-----------------------|-------------------------------------------------------------------------|
-| `explore_data.py`     | Defines `base_path` to your local dataset folder                       |
-| `scripts/gradcam.py`  | Loads model, predicts a sample image, and shows Grad-CAM visualization |
-| `scripts/train_model.py` *(optional)* | (You can create this) Train the InceptionV3 model on your dataset      |
+| Script                                | Purpose                                                                 |
+|---------------------------------------|-------------------------------------------------------------------------|
+| `explore_data.py`                     | Defines `base_path` to your local dataset folder                       |
+| `scripts/gradcam.py`                  | Loads model, predicts a sample image, and shows Grad-CAM visualization |
+| `scripts/train-model.py` *(optional)* | (You can create this) Train the InceptionV3 model on your dataset      |
 
 ---
 
