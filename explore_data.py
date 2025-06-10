@@ -1,7 +1,7 @@
 import os
 
 # Dynamically calculate the path to data/landmarks, no matter where it's called from
-base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "data", "landmarks"))
+base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "data", "landmarks60"))
 
 def explore_dataset():
     print("Welcome to the landsmark ML Pipeline!")
