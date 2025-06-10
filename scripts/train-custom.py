@@ -67,7 +67,7 @@ history = model.fit(train_gen, validation_data=val_gen, epochs=epochs)
 
 # Save model
 os.makedirs("models", exist_ok=True)
-model.save('models/custom_model.keras')
+model.save('models/Custom/custom_model.keras')
 
 # Plot accuracy
 plt.figure(figsize=(10, 5))
@@ -78,7 +78,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.grid(True)
-plt.savefig("models/custom_accuracy.png")
+plt.savefig("models/Custom/custom_accuracy.png")
 plt.show()
 
 # Plot loss
@@ -90,5 +90,5 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
 plt.grid(True)
-plt.savefig("models/custom_loss.png")
+plt.savefig("models/Custom/custom_loss.png")
 plt.show()
