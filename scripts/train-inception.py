@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 # Image settings
 img_size = (299, 299)
 batch_size = 16
-epochs = 5
+epochs = 10
 num_classes = 4
 
 # Create data generators with augmentation
@@ -19,8 +19,13 @@ datagen = ImageDataGenerator(
     rescale=1./255,
     validation_split=0.2,
     rotation_range=20,
-    zoom_range=0.2,
-    horizontal_flip=True
+    zoom_range=.2,
+    brightness_range = [0.3, 1.5],
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    shear_range=0.1,
+    horizontal_flip=True,
+    fill_mode='nearest' 
 )
 
 train_gen = datagen.flow_from_directory(
@@ -65,7 +70,7 @@ model.save('models/InceptionV3/inception_model.keras')
 plt.figure(figsize=(10, 5))
 plt.plot(history.history['accuracy'], label='Train Accuracy')
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.title('Model Accuracy over Epochs')
+plt.title('Inception Model Accuracy over Epochs')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
@@ -77,7 +82,7 @@ plt.show()
 plt.figure(figsize=(10, 5))
 plt.plot(history.history['loss'], label='Train Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.title('Model Loss over Epochs')
+plt.title('Inception Model Loss over Epochs')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()

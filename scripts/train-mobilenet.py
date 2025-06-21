@@ -12,7 +12,7 @@ from explore_data import base_path
 import matplotlib.pyplot as plt
 
 # Image settings
-img_size = (224, 224)  # MobileNetV2 için önerilen boyut
+img_size = (224, 224)
 batch_size = 8
 epochs = 10
 num_classes = 4
